@@ -1,66 +1,45 @@
-# dlib C++ library [![Travis Status](https://travis-ci.org/davisking/dlib.svg?branch=master)](https://travis-ci.org/davisking/dlib)
+## Лабораторна робота №5
+### Розпізнавання монет
 
-Dlib is a modern C++ toolkit containing machine learning algorithms and tools for creating complex software in C++ to solve real world problems. See [http://dlib.net](http://dlib.net) for the main project documentation and API reference.
+Алгоритм дій:
+1. Завантажити зображення монет для тренування детектора (10-15 штук)
+Зображення присутні в папці /img
 
+2. Створити набір даних (.xml файл) з посиланнями на зображення (через imglab)
+Файли створені в папці /tools/imglab/build/Debug
 
-
-## Compiling dlib C++ example programs
-
-Go into the examples folder and type:
-
-```bash
-mkdir build; cd build; cmake .. ; cmake --build .
+3. Виділити області з монетами на зображеннях (файли вже розмічені)
+Команда консолі (виконувати з /tools/imglab/build/Debug):
+```
+imglab coins50.xml
 ```
 
-That will build all the examples.
-If you have a CPU that supports AVX instructions then turn them on like this:
-
-```bash
-mkdir build; cd build; cmake .. -DUSE_AVX_INSTRUCTIONS=1; cmake --build .
+4. Запустити тренування детектора для конкретного набору даних (виконувати з /src/build/Debug):
+```
+train_object_detector -tv coins50.xml
 ```
 
-Doing so will make some things run faster.
-
-## Compiling your own C++ programs that use dlib
-
-The examples folder has a [CMake tutorial](https://github.com/davisking/dlib/blob/master/examples/CMakeLists.txt) that tells you what to do.  There are also additional instructions on the [dlib web site](http://dlib.net/compile.html).
-
-## Compiling dlib Python API
-
-Before you can run the Python example programs you must compile dlib. Type:
-
-```bash
-python setup.py install
+5 Перевірити необхідне фото
+```
+train_object_detector image.jpg
 ```
 
-or type
 
-```bash
-python setup.py install --yes USE_AVX_INSTRUCTIONS
+### Компіляція програми
+Компіляція самої програми:
 ```
-
-if you have a CPU that supports AVX instructions, since this makes some things run faster.  Note that you need to have boost-python installed to compile the Python API.
-
-
-
-## Running the unit test suite
-
-Type the following to compile and run the dlib unit test suite:
-
-```bash
-cd dlib/test
-mkdir build
-cd build
+mkdir dlib/src/build
+cd dlib/src/build
 cmake ..
-cmake --build . --config Release
-./dtest --runall
+cmake --build .
 ```
 
-Note that on windows your compiler might put the test executable in a subfolder called `Release`. If that's the case then you have to go to that folder before running the test.
+Компіляція інструменту для фото:
+```
+mkdir dlib/tools/imglab/build
+cd dlib/tools/imglab/build
+cmake ..
+cmake --build .
+```
 
-This library is licensed under the Boost Software License, which can be found in [dlib/LICENSE.txt](https://github.com/davisking/dlib/blob/master/dlib/LICENSE.txt).  The long and short of the license is that you can use dlib however you like, even in closed source commercial software.
-
-## dlib sponsors
-
-This research is based in part upon work supported by the Office of the Director of National Intelligence (ODNI), Intelligence Advanced Research Projects Activity (IARPA) under contract number 2014-14071600010. The views and conclusions contained herein are those of the authors and should not be interpreted as necessarily representing the official policies or endorsements, either expressed or implied, of ODNI, IARPA, or the U.S. Government.
-
+Програма та imglab вже скомпільовані
